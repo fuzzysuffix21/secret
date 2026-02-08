@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Valentine?</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: black;
+    color: white;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* FLOATING HEARTS */
+.hearts {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.heart-bg {
+    position: absolute;
+    color: red;
+    animation: floatUp linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(100vh) scale(0.8); opacity: 0; }
+    to { transform: translateY(-10vh) scale(1.2); opacity: 1; }
+}
+
+.container {
+    text-align: center;
+    z-index: 1;
+    max-width: 90%;
+    animation: fadeIn 2s ease;
+}
+
+h1 {
+    font-size: 2.4rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 15px red;
+    animation: pulse 2s infinite;
+}
+
+.names {
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    color: #ff5c5c;
+}
+
+.date {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 15px;
+}
+
+/* IMAGE */
+.photo {
+    width: 220px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin: 18px auto;
+    box-shadow: 0 0 30px rgba(255,0,0,0.6);
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 20px red; }
+    to { box-shadow: 0 0 40px red; }
+}
+
+.buttons {
+    position: relative;
+    height: 150px;
+    margin-top: 10px;
+}
+
+button {
+    padding: 14px 34px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    position: absolute;
+    transition: 0.3s;
+}
+
+#yesBtn {
+    background: red;
+    color: white;
+    left: 38%;
+    box-shadow: 0 0 20px red;
+}
+
+#yesBtn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 35px red;
+}
+
+#noBtn {
+    background: #222;
+    color: white;
+    left: 55%;
+    box-shadow: 0 0 15px gray;
+}
+
+/* LOVE MESSAGE */
+.love-message {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 20px;
+    background: rgba(255, 0, 0, 0.08);
+    box-shadow: 0 0 25px rgba(255,0,0,0.5);
+    display: none;
+    animation: reveal 1.5s ease forwards;
+}
+
+.love-message p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+@keyframes reveal {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { text-shadow: 0 0 10px red; }
+    50% { text-shadow: 0 0 25px red; }
+    100% { text-shadow: 0 0 10px red; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="hearts" id="hearts"></div>
+
+<div class="container">
+
+    <!-- ✨ EDIT THESE ✨ -->
+    <div class="names">Jia & Mumma❤️</div>
+    <div class="date">14 February 2026</div>
+
+    <h1 id="question">Will you be my Valentine? 🖤</h1>
+
+    <img src="jia private pic.jpe   g" alt="Us" class="photo">
+    
+
+    <div class="buttons" id="buttons">
+        <button id="yesBtn">YES ❤️</button>
+        <button id="noBtn">NO 💔</button>
+    </div>
+
+    <!-- 💌 LOVE MESSAGE -->
+    <div class="love-message" id="loveMessage">
+        <p>
+            From the moment you entered my life, everything felt warmer, calmer,
+            and a little more magical.  
+            <br><br>
+            This isn’t just a Valentine question — it’s a promise that I choose you,
+            today and always. ❤️  
+            <br><br>
+            Thank you for being you.
+        </p>
+    </div>
+
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const heartsContainer = document.getElementById("hearts");
+const loveMessage = document.getElementById("loveMessage");
+const question = document.getElementById("question");
+const buttons = document.getElementById("buttons");
+
+// NO button escape
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("click", moveButton);
+
+function moveButton() {
+    const x = Math.random() * (window.innerWidth - 150);
+    const y = Math.random() * (window.innerHeight - 150);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+// YES click reveal
+yesBtn.addEventListener("click", () => {
+    question.innerText = "You said YES 💖";
+    buttons.style.display = "none";
+    loveMessage.style.display = "block";
+});
+
+// Floating hearts
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart-bg";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 18 + 14 + "px";
+    heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+    heartsContainer.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 7000);
+}
+
+setInterval(createHeart, 300);
+</script>
+
+</body>
+</html>
